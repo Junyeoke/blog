@@ -3,6 +3,18 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
 	namespace="com.tenco.blog.board.repository.interfaces.BoardRepository">
+
+
+	<select id="selectWithPagingAndOffset" resultType="com.tenco.blog.board.repository.entity.Board">
+    select * from board_tb
+    limit #{pageSize} offset #{offset}
+</select>
+
+<select id="getTotalBoardCount" resultType="int">
+        SELECT COUNT(*) FROM board_tb
+    </select>
+
+
 	<select id="selectByBoardDto"
 		resultType="com.tenco.blog.board.repository.entity.Board">
 		select * from board_tb;

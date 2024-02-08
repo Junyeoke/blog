@@ -24,18 +24,32 @@ public class BoardController {
 	private BoardService boardService;
 
 	@GetMapping("/")
-	public String board(Model model, @RequestParam(defaultValue = "select") String crud) {
-		model.addAttribute("crud", crud);
-		BoardPageFormDto boardPageFormDto = new BoardPageFormDto();
-		List<Board> boardList = boardService.readBoard(boardPageFormDto);
+	public String board(Model model, @RequestParam(defaultValue = "select") String crud,
+	                    @RequestParam(defaultValue = "1") int page,
+	                    @RequestParam(defaultValue = "10") int size) {
+	    model.addAttribute("crud", crud);
 
-		if (boardList.isEmpty()) {
-			model.addAttribute("boardList", null);
-		} else {
-			model.addAttribute("boardList", boardList);
-		}
-		return "/layout/main";
+	    // 페이지네이션 정보를 포함한 DTO 생성
+	    BoardPageFormDto boardPageFormDto = new BoardPageFormDto();
+	    boardPageFormDto.setPage(page);
+	    boardPageFormDto.setPageSize(size);
+
+	    // 페이지네이션 정보를 사용하여 게시글 목록 조회
+	    List<Board> boardList = boardService.readBoardWithPaging(boardPageFormDto);
+
+	    // 페이지 정보 계산
+	    int totalPages = (int) Math.ceil(boardService.getTotalBoardCount() / (double) size);
+
+	    model.addAttribute("boardList", boardList);
+	    model.addAttribute("currentPage", page);
+	    model.addAttribute("totalPages", totalPages);
+	    model.addAttribute("pageSize", size);
+
+	    return "/layout/main";
 	}
+
+
+
 
 	@GetMapping("/board/saveForm")
 	public String saveForm() {

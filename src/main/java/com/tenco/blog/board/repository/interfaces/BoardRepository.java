@@ -36,9 +36,9 @@ public interface BoardRepository {
 	// delete
 	public int deleteById(Integer id);
 	
-
+	// 페이징 처리를 위한 메서드
+    public List<Board> selectWithPagingAndOffset(BoardPageFormDto boardPageFormDto);
 	
-	
-	
-
+    // 게시글의 총 개수를 반환하는 메서드
+    public int getTotalBoardCount();
 }
