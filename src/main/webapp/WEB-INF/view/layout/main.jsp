@@ -8,7 +8,7 @@
 <div class="container mt-5">
     <div class="bg-light">
         <c:choose>
-            <c:when test="${boardList != null && not empty boardList}">
+            <c:when test="${boardList != null}">
                 <table class="table table-striped">
                     <thead class="table-dark">
                         <tr>
